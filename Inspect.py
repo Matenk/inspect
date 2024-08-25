@@ -1,34 +1,25 @@
 import inspect
-from pprint import pprint
+import types
 
-class SomeClass:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def some_methode(self):
-        return 4 + 10
-
-
-some_obj = SomeClass('Jack', 30)
 
 def introspection_info(obj):
+    
+    obj_type = type(obj).__name__
 
-    for attr_name in dir(obj):
-        attr = getattr(obj, attr_name)
-        print('Метод или аттрибут + Тип: \n',attr_name, type(attr))
+    attributes = dir(obj)
 
-    methods = [method for method in dir(obj) if callable(getattr(obj, method))]
-    pprint(f'Только методы: {methods}')
+    methods = [method for method in attributes if callable(getattr(obj, method))]
 
+    module = inspect.getmodule(obj)
 
+    info = {
+        'type': obj_type,
+        'attributes': attributes,
+        'methods': methods,
+        'module': module
+    }
 
+    
+    return info
 
-
-    get_module = inspect.getmodule(some_obj)
-    print(f'Путь к объекту: {get_module}.')
-
-
-
-introspection_info(some_obj)
 
